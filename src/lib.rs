@@ -141,7 +141,8 @@ pub fn load() -> Result<()> {
 ///
 /// [`Error::Io`]: enum.Error.html#variant.Io
 pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
-    utils::parse_content(&internal::read_to_string(reader)?);
+    let content = internal::read_to_string(reader)?;
+    utils::set_variables(&utils::parse_lines(&content));
 
     Ok(())
 }

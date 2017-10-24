@@ -22,25 +22,6 @@ use std::env;
 /// ```
 pub type ParsedLine<'a> = (&'a str, &'a str);
 
-/// Loads the given slice of parsed lines into the environment.
-///
-/// # Examples
-///
-/// ```rust
-/// use kankyo::utils;
-///
-/// let content = "FOO=bar\nBAR=baz";
-///
-/// let lines = utils::parse_lines(content);
-///
-/// utils::load(&lines);
-/// ```
-pub fn load(lines: &[ParsedLine]) {
-    for line in lines {
-        env::set_var(line.0, line.1);
-    }
-}
-
 /// Maps the given slice of [`ParsedLine`] into a vector of their keys.
 ///
 /// # Examples
@@ -51,15 +32,6 @@ pub fn load(lines: &[ParsedLine]) {
 /// [`ParesedLines`]: type.ParsedLine.html
 pub fn only_keys<'a>(lines: &'a [ParsedLine]) -> Vec<&'a str> {
     lines.into_iter().map(|&(key, _)| key).collect()
-}
-
-/// Parse the contents of a
-pub fn parse_content(content: &str) {
-    for line in parse_lines(content) {
-        if env::var(&line.0).is_err() {
-            env::set_var(&line.0, &line.1);
-        }
-    }
 }
 
 /// Returns a `Vec` of `ParsedLine`s, each line representing a parsed K-V of the
@@ -109,6 +81,29 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
 
         (key, value)
     })
+}
+
+/// Loads the given slice of parsed lines into the environment.
+///
+/// # Examples
+///
+/// ```rust
+/// use kankyo::utils;
+///
+/// let content = "FOO=bar\nBAR=baz";
+///
+/// let lines = utils::parse_lines(content);
+///
+/// utils::set_variables(&lines);
+/// ```
+pub fn set_variables(lines: &[ParsedLine]) {
+    for line in lines {
+        if env::var(line.0).is_ok() {
+            continue;
+        }
+
+        env::set_var(line.0, line.1);
+    }
 }
 
 /// Unloads the given slice of keys from the environment.
