@@ -1,0 +1,25 @@
+[package]
+authors = ["Zeyla Hellyer <zey@zey.moe>"]
+categories = ["config"]
+description = "Simple, efficient, and precise .env library."
+documentation = "https://docs.rs/kankyo"
+keywords = ["config", "dotenv", ".env"]
+license = "ISC"
+name = "kankyo"
+repository = "https://github.com/zeyla/kankyo.rs"
+version = "0.1.0"
+
+[badges.maintenance]
+status = "actively-developed"
+
+[badges.coveralls]
+branch = "master"
+repository = "zeyla/kankyo"
+service = "github"
+
+[badges.travis-ci]
+branch = "master"
+repository = "zeyla/kankyo"
+
+[[example]]
+name = "example_01"

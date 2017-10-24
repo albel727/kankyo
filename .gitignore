@@ -1,0 +1,6 @@
+# ide
+/.vscode
+
+# cargo
+target/
+Cargo.lock

@@ -1,0 +1,7 @@
+[package]
+name = "kankyo-tests"
+version = "0.1.0"
+authors = ["Zeyla Hellyer <zey@zey.moe>"]
+
+[dependencies]
+kankyo = {path = "../"}
