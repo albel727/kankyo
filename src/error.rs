@@ -7,7 +7,7 @@ use std::result::Result as StdResult;
 pub type Result<T> = StdResult<T, Error>;
 
 /// Standard and only Result enum for the crate. This is the `Result`'s `Err`
-/// `Err` type for all public functions.
+/// type for all public functions.
 #[derive(Debug)]
 pub enum Error {
     /// An error from the `std::io` module occurred.
