@@ -30,8 +30,14 @@ pub type ParsedLine<'a> = (&'a str, &'a str);
 /// ```
 ///
 /// [`ParesedLines`]: type.ParsedLine.html
-pub fn only_keys<'a>(lines: &'a [ParsedLine]) -> Vec<&'a str> {
-    lines.into_iter().map(|&(key, _)| key).collect()
+// This accepts a mutable reference to a Vec so that, if the user already has
+// one to use, they can pass it instead of us creating a new one.
+//
+// i.e.: scenario where this will _slighty_ improve performance.
+pub fn only_keys<'a>(lines: &'a [ParsedLine], keys: &mut Vec<&'a str>) {
+    for &(key, _) in lines {
+        keys.push(key);
+    }
 }
 
 /// Returns a `Vec` of `ParsedLine`s, each line representing a parsed K-V of the

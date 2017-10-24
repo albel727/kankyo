@@ -210,8 +210,10 @@ pub fn unload() -> Result<()> {
 /// [`utils::unload`]: utils/fn.unload.html
 pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
     let buf = internal::read_to_string(reader)?;
-
-    utils::unload(&utils::only_keys(&utils::parse_lines(&buf)));
+    let lines = utils::parse_lines(&buf);
+    let mut keys = vec![];
+    utils::only_keys(&lines, &mut keys);
+    utils::unload(&keys);
 
     Ok(())
 }
