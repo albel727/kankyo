@@ -27,6 +27,14 @@ pub type ParsedLine<'a> = (&'a str, &'a str);
 /// # Examples
 ///
 /// ```rust
+/// use kankyo::utils;
+///
+/// let buf = "FOO=bar\nBAR=baz";
+/// let lines = utils::parse_lines(buf);
+/// let mut keys = vec![];
+/// utils::only_keys(&lines, &mut keys);
+///
+/// assert_eq!(keys, vec!["FOO", "BAR"]);
 /// ```
 ///
 /// [`ParesedLines`]: type.ParsedLine.html
