@@ -1,4 +1,4 @@
-[![ci-badge][]][ci] [![license-badge][]][license]
+[![ci-badge][]][ci]
 
 `kankyo` is a crate for the loading and unloading of `.env` files or other
 readers into and from the environment.
@@ -50,6 +50,4 @@ License info in [LICENSE.md]. Long story short, ISC.
 
 [ci]: https://travis-ci.org/zeyla/kankyo.rs
 [ci-badge]: https://travis-ci.org/zeyla/kankyo.rs.svg?branch=master
-[license]: http://unlicense.org/
-[license-badge]: https://img.shields.io/badge/license-ISC-lightgrey.svg?style=flat-square
 [LICENSE.md]: https://github.com/zeyla/kankyo.rs/blob/master/LICENSE.md
