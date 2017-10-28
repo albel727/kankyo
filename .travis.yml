@@ -10,6 +10,6 @@ rust:
   - nightly
 sudo: false
 script:
-  - cargo build
-  - cd tests
+  - cargo test
+  - cd test_app
   - cargo test
