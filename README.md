@@ -48,6 +48,6 @@ println!("Loaded!");
 
 License info in [LICENSE.md]. Long story short, ISC.
 
-[ci]: https://travis-ci.org/zeyla/kankyo.rs
-[ci-badge]: https://travis-ci.org/zeyla/kankyo.rs.svg?branch=master
-[LICENSE.md]: https://github.com/zeyla/kankyo.rs/blob/master/LICENSE.md
+[ci]: https://travis-ci.org/zeyla/kankyo
+[ci-badge]: https://travis-ci.org/zeyla/kankyo.svg?branch=master
+[LICENSE.md]: https://github.com/zeyla/kankyo/blob/master/LICENSE.md
