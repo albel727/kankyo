@@ -134,6 +134,6 @@ pub fn set_variables(lines: &[ParsedLine]) {
 /// ```
 pub fn unload(keys: &[&str]) {
     for key in keys {
-        env::remove_var(&key);
+        env::remove_var(key);
     }
 }
