@@ -93,7 +93,7 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
             .map(|pos_pound| &line[post_idx..pos_pound])
             .unwrap_or_else(|| &line[post_idx..]);
 
-        (key, value)
+        (key.trim(), value.trim())
     })
 }
 
