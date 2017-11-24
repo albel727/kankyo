@@ -76,7 +76,17 @@ pub fn parse_lines(buf: &str) -> Vec<ParsedLine> {
 /// assert!(utils::parse_line("HELLO=").is_some()); // a 0-length value is valid
 /// ```
 pub fn parse_line(line: &str) -> Option<ParsedLine> {
-    line.find('=').map(|pos_equals| {
+    let (equals, comment) = (line.find('='), line.find('#'));
+
+    if let Some(comment) = comment {
+        if let Some(equals) = equals {
+            if comment < equals {
+                return None;
+            }
+        }
+    }
+
+    equals.map(|pos_equals| {
         // We have the position of the equals sign, so we know for sure what the
         // key is.
         let key = &line[..pos_equals];
@@ -88,8 +98,7 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
         //
         // If there is a hash, then slice from `post_idx` until its position. If
         // there is not, slice from `post_idx` until the end.
-        let value = line[post_idx..]
-            .find('#')
+        let value = comment
             .map(|pos_pound| &line[post_idx..pos_pound])
             .unwrap_or_else(|| &line[post_idx..]);
 
