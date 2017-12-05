@@ -5,18 +5,17 @@
 
 extern crate kankyo;
 
-use kankyo::utils::*;
 use kankyo::*;
 
 #[test]
 fn pairings() {
-    assert_eq!(parse_line("key=value"), Some(("key", "value")));
-    assert_eq!(parse_line("key =value"), Some(("key", "value")));
-    assert_eq!(parse_line(" key ="), Some(("key", "")));
+    assert_eq!(utils::parse_line("key=value"), Some(("key", "value")));
+    assert_eq!(utils::parse_line("key =value"), Some(("key", "value")));
+    assert_eq!(utils::parse_line(" key ="), Some(("key", "")));
 }
 
 #[test]
 fn comments() {
-    assert_eq!(parse_line("key#=value"), None);
-    assert_eq!(parse_line("key=#abc"), Some(("key", "")));
+    assert_eq!(utils::parse_line("key#=value"), None);
+    assert_eq!(utils::parse_line("key=#abc"), Some(("key", "")));
 }
