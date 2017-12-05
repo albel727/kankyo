@@ -211,9 +211,7 @@ pub fn unload() -> Result<()> {
 pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
     let buf = internal::read_to_string(reader)?;
     let lines = utils::parse_lines(&buf);
-    let mut keys = Vec::with_capacity(lines.len());
-    utils::only_keys(&lines, &mut keys);
-    utils::unload(&keys);
+    utils::unload_from_parsed_lines(&lines);
 
     Ok(())
 }

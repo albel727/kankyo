@@ -76,4 +76,14 @@ mod utils {
             kankyo::utils::unload(s);
         });
     }
+
+    #[bench]
+    fn unload_from_parsed_lines(b: &mut Bencher) {
+        let s = "KEY=VALUE\nKEY2=VALUE2\nKEY3=VALUE3\nKEY4=VALUE4#abc";
+        let lines = kankyo::utils::parse_lines(s);
+
+        b.iter(|| {
+            kankyo::utils::unload_from_parsed_lines(&lines);
+        });
+    }
 }

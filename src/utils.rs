@@ -144,3 +144,31 @@ pub fn unload(keys: &[&str]) {
         env::remove_var(key);
     }
 }
+
+/// Unloads from the given borrowed [`ParsedLine`]s.
+///
+/// This is going to be slightly more efficient than taking the result of
+/// [`parse_lines`], passing it through [`only_keys`], and then finally passing
+/// it through [`unload`], as it does not go through the extra step of mapping
+/// `ParseLine`s 0-element tuple values to a Vec.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// use kankyo::utils;
+///
+/// let string = "KEY=VALUE\nKEY2=VALUE2\n# a comment";
+/// let lines = parse_lines(string);
+///
+/// utils::unload_from_parsed_lines(lines);
+/// ```
+///
+/// [`ParsedLine`]: type.ParsedLine.html
+/// [`only_keys`]: fn.only_keys.html
+/// [`parse_lines`]: fn.parse_lines.html
+/// [`unload`]: fn.unload.html
+pub fn unload_from_parsed_lines(lines: &[ParsedLine]) {
+    for &(key, _) in lines {
+        env::remove_var(key);
+    }
+}
