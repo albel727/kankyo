@@ -121,11 +121,9 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
 /// ```
 pub fn set_variables(lines: &[ParsedLine]) {
     for line in lines {
-        if env::var(line.0).is_ok() {
-            continue;
+        if env::var(line.0).is_err() {
+            env::set_var(line.0, line.1);
         }
-
-        env::set_var(line.0, line.1);
     }
 }
 
