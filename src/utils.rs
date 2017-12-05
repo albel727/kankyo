@@ -158,9 +158,9 @@ pub fn unload(keys: &[&str]) {
 /// use kankyo::utils;
 ///
 /// let string = "KEY=VALUE\nKEY2=VALUE2\n# a comment";
-/// let lines = parse_lines(string);
+/// let lines = utils::parse_lines(string);
 ///
-/// utils::unload_from_parsed_lines(lines);
+/// utils::unload_from_parsed_lines(&lines);
 /// ```
 ///
 /// [`ParsedLine`]: type.ParsedLine.html
