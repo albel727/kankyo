@@ -2,7 +2,9 @@
 //! keys, and working with parsed .env lines.
 //!
 //! You most likely do not need to work with these yourself and should usually
-//! prefer the higher-level functions in the root module of the library.
+//! prefer the higher-level functions in the [root module] of the library.
+//!
+//! [root module]: ../index.html
 
 use std::env;
 
@@ -26,6 +28,9 @@ pub type ParsedLine<'a> = (&'a str, &'a str);
 ///
 /// # Examples
 ///
+/// Parse a string of the variable pairs `("FOO", "bar")` and `("BAR", "baz")`
+/// into `ParsedLine`s and then retrieve only the keys:
+///
 /// ```rust
 /// use kankyo::utils;
 ///
@@ -41,15 +46,31 @@ pub type ParsedLine<'a> = (&'a str, &'a str);
 // This accepts a mutable reference to a Vec so that, if the user already has
 // one to use, they can pass it instead of us creating a new one.
 //
-// i.e.: scenario where this will _slighty_ improve performance.
+// reason: there are scenarios where this will _slighty_ improve performance,
+// perhaps if the user has a vector of keys they are already working with.
 pub fn only_keys<'a>(lines: &'a [ParsedLine], keys: &mut Vec<&'a str>) {
     for &(key, _) in lines {
         keys.push(key);
     }
 }
 
-/// Returns a `Vec` of `ParsedLine`s, each line representing a parsed K-V of the
-/// given file.
+/// Returns a `Vec` of `ParsedLine`s, each line representing a parsed key-value
+/// pair of the given buffer.
+///
+/// # Examples
+///
+/// Parses a buffer into parsed lines, which are a key-value pair of string
+/// slices:
+///
+/// ```rust
+/// use kankyo::utils;
+///
+/// let input = "FOO=bar\nBAZ=qux";
+/// let lines = utils::parse_lines(input);
+///
+/// // Make sure there are two pairs in the resultant vector:
+/// assert_eq!(lines.len(), 2);
+/// ```
 pub fn parse_lines(buf: &str) -> Vec<ParsedLine> {
     buf.lines().filter_map(parse_line).collect()
 }
@@ -110,6 +131,9 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
 ///
 /// # Examples
 ///
+/// Parse a buffer into parsed lines, and then load the lines into the
+/// environment:
+///
 /// ```rust
 /// use kankyo::utils;
 ///
@@ -130,9 +154,11 @@ pub fn set_variables(lines: &[ParsedLine]) {
 /// Unloads the given slice of keys from the environment.
 ///
 /// This effectively iterates over the given slice and calls `env::remove_var`
-/// on each.
+/// on each value.
 ///
 /// # Examples
+///
+/// Unload the environment variables `"FOO"` and `"BAR"`:
 ///
 /// ```rust,no_run
 /// use kankyo::utils;
@@ -154,11 +180,18 @@ pub fn unload(keys: &[&str]) {
 ///
 /// # Examples
 ///
+/// Unload the environment variables `"KEY"` and `"KEY2"` after parsing the
+/// input string:
+///
 /// ```rust,no_run
 /// use kankyo::utils;
 ///
 /// let string = "KEY=VALUE\nKEY2=VALUE2\n# a comment";
 /// let lines = utils::parse_lines(string);
+///
+/// // Ensure both keys are present for unloading:
+/// assert_eq!(lines[0].0, "KEY");
+/// assert_eq!(lines[1].0, "VALUE");
 ///
 /// utils::unload_from_parsed_lines(&lines);
 /// ```

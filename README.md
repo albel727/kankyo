@@ -15,6 +15,19 @@ Add the following dependency to your project's `Cargo.toml`:
 kankyo = "~0.1"
 ```
 
+### What are `.env` files?
+
+Environment variable files, often named `.env`, are files usually located at
+the project root. The contents of the file are `=` (equals sign)-delimited
+lines of key-value pairs. A sample file might look like:
+
+```ini
+DEBUG=info
+DB_HOST=127.0.0.1 # This is a comment, not parsed as part of the value.
+
+# Empty lines are ignored, as are lines solely consisting of a comment.
+```
+
 ### Usage
 
 The library works with interfacing over readers (types implementing the

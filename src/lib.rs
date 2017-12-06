@@ -15,7 +15,18 @@
 //! kankyo = "~0.1"
 //! ```
 //!
-//! ### Usage
+//! ### What are `.env` files?
+//!
+//! Environment variable files, often named `.env`, are files usually located at
+//! the project root. The contents of the file are `=` (equals sign)-delimited
+//! lines of key-value pairs. A sample file might look like:
+//!
+//! ```ini
+//! DEBUG=info
+//! DB_HOST=127.0.0.1 # This is a comment, not parsed as part of the value.
+//!
+//! # Empty lines are ignored, as are lines solely consisting of a comment.
+//! ```
 //!
 //! The library works with interfacing over readers (types implementing the
 //! `std::io::Read` trait), meaning that you can pass slices of bytes, strings,
@@ -168,6 +179,10 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 /// #     try_main().unwrap();
 /// # }
 /// ```
+///
+/// # Errors
+///
+/// Returns [`Error::Io`] if there was an error reading from the reader.
 ///
 /// [`Error::Io`]: enum.Error.html#variant.Io
 #[inline]
