@@ -6,7 +6,7 @@ documentation = "https://docs.rs/kankyo"
 keywords = ["config", "dotenv"]
 license = "ISC"
 name = "kankyo"
-repository = "https://github.com/zeyla/kankyo.rs"
+repository = "https://github.com/zeyla/kankyo.git"
 version = "0.1.1"
 
 [badges.maintenance]
