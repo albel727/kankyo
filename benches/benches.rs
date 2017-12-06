@@ -20,7 +20,6 @@ fn unload_from_reader(b: &mut Bencher) {
 mod utils {
     use kankyo;
     use test::Bencher;
-    use std::io::Cursor;
 
     #[bench]
     fn only_keys(b: &mut Bencher) {
