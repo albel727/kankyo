@@ -37,7 +37,7 @@ pub type ParsedLine<'a> = (&'a str, &'a str);
 /// assert_eq!(keys, vec!["FOO", "BAR"]);
 /// ```
 ///
-/// [`ParesedLines`]: type.ParsedLine.html
+/// [`ParsedLine`]: type.ParsedLine.html
 // This accepts a mutable reference to a Vec so that, if the user already has
 // one to use, they can pass it instead of us creating a new one.
 //
@@ -150,7 +150,7 @@ pub fn unload(keys: &[&str]) {
 /// This is going to be slightly more efficient than taking the result of
 /// [`parse_lines`], passing it through [`only_keys`], and then finally passing
 /// it through [`unload`], as it does not go through the extra step of mapping
-/// `ParseLine`s 0-element tuple values to a Vec.
+/// `ParsedLine`s 0-element tuple values to a Vec.
 ///
 /// # Examples
 ///
