@@ -7,6 +7,13 @@ use self::test::Bencher;
 use std::io::Cursor;
 
 #[bench]
+fn snapshot(b: &mut Bencher) {
+    b.iter(|| {
+        let _ = kankyo::snapshot();
+    });
+}
+
+#[bench]
 fn unload_from_reader(b: &mut Bencher) {
     let s = "KEY=VALUE\nKEY2=VALUE2\nKEY3=VALUE3\nKEY4=VALUE4#abc".to_owned();
     let mut cursor = Cursor::new(s);

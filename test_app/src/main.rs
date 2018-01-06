@@ -48,6 +48,20 @@ fn test_key() {
     assert!(kankyo::key("does_not_exist").is_none());
 }
 
+// Test that a snapshot is successfully produced and has the correct key-value
+// pairs.
+#[test]
+fn test_snapshot() {
+    kankyo::unload().unwrap();
+
+    let before = kankyo::snapshot();
+
+    kankyo::load().unwrap();
+    let after = kankyo::snapshot();
+    assert!(!before.contains_key("test"));
+    assert!(after.contains_key("test"));
+}
+
 // Test that unloading all of the keys from the default '.env' file works.
 #[test]
 fn test_unload() {

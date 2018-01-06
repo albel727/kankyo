@@ -82,6 +82,7 @@ mod internal;
 pub use error::{Error, Result};
 
 use std::env;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
 use std::path::Path;
@@ -156,6 +157,38 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
     utils::set_variables(&utils::parse_lines(&content));
 
     Ok(())
+}
+
+/// Creates a snapshot of the present environment variables.
+///
+/// This is similar to `std::env::vars`, but will instead return a HashMap over
+/// only the environment variables that are valid UTF-8.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// # use std::error::Error;
+/// #
+/// # fn try_main() -> Result<(), Box<Error>> {
+/// let snapshot = kankyo::snapshot();
+///
+/// kankyo::load()?;
+///
+/// #     Ok(())
+/// }
+/// #
+/// # fn main() {
+/// #     try_main().unwrap();
+/// # }
+/// ```
+pub fn snapshot() -> HashMap<String, String> {
+    env::vars_os().into_iter().filter_map(|(key, value)| {
+        if let (Ok(k), Ok(v)) = (key.into_string(), value.into_string()) {
+            Some((k, v))
+        } else {
+            None
+        }
+    }).collect()
 }
 
 /// Unloads all environment variables in the default `./.env` file from the
