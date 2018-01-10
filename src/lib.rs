@@ -79,7 +79,7 @@ pub mod utils;
 mod error;
 mod internal;
 
-pub use error::{Error, Result};
+pub use error::Result;
 
 use std::env;
 use std::collections::HashMap;
@@ -137,9 +137,7 @@ pub fn key(name: &str) -> Option<String> {
 ///
 /// # Errors
 ///
-/// Returns [`Error::Io`] if there was an error reading the file.
-///
-/// [`Error::Io`]: enum.Error.html#variant.Io
+/// Returns an `std::io::Error` if there was an error reading the file.
 #[inline]
 pub fn load() -> Result<()> {
     load_from_reader(&mut File::open(Path::new(".env"))?)
@@ -149,9 +147,7 @@ pub fn load() -> Result<()> {
 ///
 /// # Errors
 ///
-/// Returns [`Error::Io`] if there was an error reading from the reader.
-///
-/// [`Error::Io`]: enum.Error.html#variant.Io
+/// Returns an `std::io::Error` if there was an error reading from the reader.
 pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
     let content = internal::read_to_string(reader)?;
     utils::set_variables(&utils::parse_lines(&content));
@@ -215,9 +211,7 @@ pub fn snapshot() -> HashMap<String, String> {
 ///
 /// # Errors
 ///
-/// Returns [`Error::Io`] if there was an error reading from the reader.
-///
-/// [`Error::Io`]: enum.Error.html#variant.Io
+/// Returns an `std::io::Error` if there was an error reading from the reader.
 #[inline]
 pub fn unload() -> Result<()> {
     unload_from_reader(&mut File::open(".env")?)
@@ -252,9 +246,8 @@ pub fn unload() -> Result<()> {
 ///
 /// # Errors
 ///
-/// Returns [`Error::Io`] if there is an error reading from the reader.
+/// Returns an `std::io::Error` if there is an error reading from the reader.
 ///
-/// [`Error::Io`]: enum.Error.html#variant.Io
 /// [`utils::unload`]: utils/fn.unload.html
 pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
     let buf = internal::read_to_string(reader)?;
