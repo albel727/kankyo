@@ -71,6 +71,7 @@ pub fn only_keys<'a>(lines: &'a [ParsedLine], keys: &mut Vec<&'a str>) {
 /// // Make sure there are two pairs in the resultant vector:
 /// assert_eq!(lines.len(), 2);
 /// ```
+#[inline]
 pub fn parse_lines(buf: &str) -> Vec<ParsedLine> {
     buf.lines().filter_map(parse_line).collect()
 }
@@ -99,11 +100,9 @@ pub fn parse_lines(buf: &str) -> Vec<ParsedLine> {
 pub fn parse_line(line: &str) -> Option<ParsedLine> {
     let (equals, comment) = (line.find('='), line.find('#'));
 
-    if let Some(comment) = comment {
-        if let Some(equals) = equals {
-            if comment < equals {
-                return None;
-            }
+    if let (Some(comment), Some(equals)) = (comment, equals) {
+        if comment < equals {
+            return None;
         }
     }
 
