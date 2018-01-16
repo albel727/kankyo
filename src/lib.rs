@@ -12,7 +12,7 @@
 //! Add the following dependency to your project's `Cargo.toml`:
 //!
 //! ```toml
-//! kankyo = "~0.1"
+//! kankyo = "~0.2"
 //! ```
 //!
 //! ### What are `.env` files?
