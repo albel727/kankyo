@@ -77,7 +77,6 @@
 pub mod utils;
 
 mod error;
-mod internal;
 
 pub use error::Result;
 
@@ -149,7 +148,7 @@ pub fn load() -> Result<()> {
 ///
 /// Returns an `std::io::Error` if there was an error reading from the reader.
 pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
-    let content = internal::read_to_string(reader)?;
+    let content = read_to_string(reader)?;
     utils::set_variables(&utils::parse_lines(&content));
 
     Ok(())
@@ -178,13 +177,7 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 /// # }
 /// ```
 pub fn snapshot() -> HashMap<String, String> {
-    env::vars_os().into_iter().filter_map(|(key, value)| {
-        if let (Ok(k), Ok(v)) = (key.into_string(), value.into_string()) {
-            Some((k, v))
-        } else {
-            None
-        }
-    }).collect()
+    env::vars_os().into_iter().filter_map(utils::parse_kv).collect()
 }
 
 /// Unloads all environment variables in the default `./.env` file from the
@@ -250,9 +243,16 @@ pub fn unload() -> Result<()> {
 ///
 /// [`utils::unload`]: utils/fn.unload.html
 pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
-    let buf = internal::read_to_string(reader)?;
+    let buf = read_to_string(reader)?;
     let lines = utils::parse_lines(&buf);
     utils::unload_from_parsed_lines(&lines);
 
     Ok(())
+}
+
+fn read_to_string<R: Read>(reader: &mut R) -> Result<String> {
+    let mut s = String::new();
+    reader.read_to_string(&mut s)?;
+
+    Ok(s)
 }

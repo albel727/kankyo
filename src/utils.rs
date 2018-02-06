@@ -6,6 +6,7 @@
 //!
 //! [root module]: ../index.html
 
+use std::ffi::OsString;
 use std::env;
 
 /// A key-value pair of a line from a .env file.
@@ -124,6 +125,16 @@ pub fn parse_line(line: &str) -> Option<ParsedLine> {
 
         (key.trim(), value.trim())
     })
+}
+
+/// Parses a K-V pair of an environment variable OsString name and value into
+/// their String equivalents.
+pub fn parse_kv(pair: (OsString, OsString)) -> Option<(String, String)> {
+    if let (Ok(k), Ok(v)) = (pair.0.into_string(), pair.1.into_string()) {
+        Some((k, v))
+    } else {
+        None
+    }
 }
 
 /// Loads the given slice of parsed lines into the environment.
