@@ -9,6 +9,7 @@ rust:
   - nightly
 sudo: false
 script:
+  - echo "A=B\nC=D" > .env
   - cargo test
   - cd test_app
   - cargo test
