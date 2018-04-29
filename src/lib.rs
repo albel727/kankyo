@@ -168,9 +168,8 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 /// let snapshot = kankyo::snapshot();
 ///
 /// kankyo::load()?;
-///
 /// #     Ok(())
-/// }
+/// # }
 /// #
 /// # fn main() {
 /// #     try_main().unwrap();
