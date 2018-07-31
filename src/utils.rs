@@ -215,3 +215,65 @@ pub fn unload_from_parsed_lines(lines: &[ParsedLine]) {
         env::remove_var(key);
     }
 }
+
+#[cfg(test)]
+mod test {
+    use std::ffi::OsString;
+    use utils;
+
+    #[test]
+    fn pairings() {
+        assert_eq!(utils::parse_line("key=value"), Some(("key", "value")));
+        assert_eq!(utils::parse_line("key =value"), Some(("key", "value")));
+        assert_eq!(utils::parse_line(" key ="), Some(("key", "")));
+    }
+
+    #[test]
+    fn comments() {
+        assert_eq!(utils::parse_line("key#=value"), None);
+        assert_eq!(utils::parse_line("key=#abc"), Some(("key", "")));
+    }
+
+    #[test]
+    fn only_keys() {
+        let lines = utils::parse_lines("KEY=value\nKEY2=value2");
+        let mut vec = Vec::with_capacity(lines.len());
+        utils::only_keys(&lines, &mut vec);
+
+        assert_eq!(vec, &["KEY", "KEY2"]);
+    }
+
+    #[test]
+    fn parse_line() {
+        assert_eq!(utils::parse_line("KEY=value"), Some(("KEY", "value")));
+        assert_eq!(utils::parse_line("KEY=value#test"), Some(("KEY", "value")));
+        assert!(utils::parse_line("KEY").is_none());
+        assert_eq!(utils::parse_line("KEY="), Some(("KEY", "")));
+        assert!(utils::parse_line("KEY#B=C#").is_none());
+    }
+
+    #[test]
+    fn parse_lines() {
+        assert_eq!(utils::parse_lines("A=B\nC=D\nE=F#").len(), 3);
+    }
+
+    #[test]
+    fn test_parse_kv() {
+        let mut key = OsString::new();
+        key.push("A");
+        let mut value = OsString::new();
+        value.push("B");
+        assert!(utils::parse_kv((key, value.clone())).is_some());
+
+        let mut modify = String::new();
+        modify.push('\x7f');
+
+        unsafe {
+            modify.as_mut_vec()[0] += 1;
+        }
+
+        let invalid_key = OsString::from(modify);
+
+        assert!(utils::parse_kv((invalid_key, value)).is_none());
+    }
+}
