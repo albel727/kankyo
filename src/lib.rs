@@ -111,7 +111,11 @@ use std::path::Path;
 /// # }
 /// ```
 #[inline]
-pub fn key(name: &str) -> Option<String> {
+pub fn key<T: AsRef<str>>(name: T) -> Option<String> {
+    _key(name.as_ref())
+}
+
+fn _key(name: &str) -> Option<String> {
     env::var(name).ok()
 }
 
