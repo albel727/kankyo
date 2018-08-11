@@ -263,7 +263,7 @@ fn read_to_string<R: Read>(reader: &mut R) -> Result<String> {
 #[cfg(test)]
 mod test {
     use std::io::Cursor;
-    use ::*;
+    use super::*;
 
     #[test]
     fn test_key() {
