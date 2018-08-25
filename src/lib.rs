@@ -1,4 +1,6 @@
-//! kankyo
+//! [![ci-badge][]][ci] [![license-badge][]][license] [![docs-badge][]][docs] [![rust badge]][rust link]
+//!
+//! # kankyo
 //!
 //! `kankyo` is a crate for the loading and unloading of `.env` files or other
 //! readers into and from the environment.
@@ -8,6 +10,8 @@
 //! design, it is applicable in both synchronous and asynchronous applications.
 //!
 //! ### Installation
+//!
+//! This library requires at least Rust 1.13.0.
 //!
 //! Add the following dependency to your project's `Cargo.toml`:
 //!
@@ -72,6 +76,16 @@
 //! #     try_main().unwrap();
 //! # }
 //! ```
+//!
+//! [ci]: https://travis-ci.org/zeyla/kankyo
+//! [ci-badge]: https://img.shields.io/travis/zeyla/kankyo.svg?style=flat-square
+//! [docs]: https://docs.rs/kankyo
+//! [docs-badge]: https://img.shields.io/badge/docs-online-5023dd.svg?style=flat-square
+//! [license]: https://opensource.org/licenses/ISC
+//! [license-badge]: https://img.shields.io/badge/license-ISC-blue.svg?style=flat-square
+//! [rust badge]: https://img.shields.io/badge/rust-1.13+-93450a.svg?style=flat-square
+//! [rust link]: https://blog.rust-lang.org/2016/11/10/Rust-1.13.html
+//!
 #![deny(missing_docs)]
 
 pub mod utils;
