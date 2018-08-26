@@ -46,7 +46,9 @@
 //! # use std::error::Error;
 //! #
 //! # fn try_main() -> Result<(), Box<Error>> {
-//! kankyo::load_from_reader(&mut File::open("./.env")?)?;
+//! let mut file = try!(File::open("./.env"));
+//!
+//! try!(kankyo::load_from_reader(&mut file));
 //!
 //! println!("Loaded!");
 //! #     Ok(())
@@ -66,7 +68,7 @@
 //! # use std::error::Error;
 //! #
 //! # fn try_main() -> Result<(), Box<Error>> {
-//! kankyo::load()?;
+//! try!(kankyo::load());
 //!
 //! println!("Loaded!");
 //! #     Ok(())
@@ -111,7 +113,7 @@ use std::path::Path;
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// kankyo::load()?;
+/// try!(kankyo::load());
 ///
 /// if let Some(value) = kankyo::key("MY_KEY") {
 ///     println!("The value of MY_KEY is: {}", value);
@@ -140,7 +142,7 @@ fn _key(name: &str) -> Option<String> {
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// kankyo::load()?;
+/// try!(kankyo::load());
 ///
 /// println!("Loaded!");
 /// #     Ok(())
@@ -186,7 +188,7 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 /// # fn try_main() -> Result<(), Box<Error>> {
 /// let snapshot = kankyo::snapshot();
 ///
-/// kankyo::load()?;
+/// try!(kankyo::load());
 /// #     Ok(())
 /// # }
 /// #
@@ -207,10 +209,10 @@ pub fn snapshot() -> HashMap<String, String> {
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// kankyo::load()?;
+/// try!(kankyo::load());
 /// println!("Loaded!");
 ///
-/// kankyo::unload()?;
+/// try!(kankyo::unload());
 /// println!("Unloaded!");
 /// #     Ok(())
 /// # }
@@ -245,7 +247,10 @@ pub fn unload() -> Result<()> {
 /// #
 /// use std::fs::File;
 ///
-/// kankyo::unload_from_reader(&mut File::open("./.env")?)?;
+/// let mut file = try!(File::open("./.env"));
+///
+/// try!(kankyo::unload_from_reader(&mut file));
+///
 /// println!("Successfully unloaded from `./.env`");
 /// #     Ok(())
 /// # }
@@ -289,7 +294,9 @@ mod test {
 
     #[test]
     fn test_reader_loaders() {
-        let mut cursor = Cursor::new(b"A=B\nC=D");
+        let text = "A=B\nC=D".to_owned().into_bytes();
+
+        let mut cursor = Cursor::new(text);
 
         load_from_reader(&mut cursor).unwrap();
 
