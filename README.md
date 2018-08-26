@@ -9,7 +9,7 @@ design, it is applicable in both synchronous and asynchronous applications.
 
 ### Installation
 
-This library requires at least Rust 1.13.0.
+This library requires at least Rust 1.0.0.
 
 Add the following dependency to your project's `Cargo.toml`:
 
@@ -70,5 +70,5 @@ License info in [LICENSE.md]. Long story short, ISC.
 [docs-badge]: https://img.shields.io/badge/docs-online-5023dd.svg?style=flat-square
 [license]: https://opensource.org/licenses/ISC
 [license-badge]: https://img.shields.io/badge/license-ISC-blue.svg?style=flat-square
-[rust badge]: https://img.shields.io/badge/rust-1.13+-93450a.svg?style=flat-square
-[rust link]: https://blog.rust-lang.org/2016/11/10/Rust-1.13.html
+[rust badge]: https://img.shields.io/badge/rust-1.0+-93450a.svg?style=flat-square
+[rust link]: https://blog.rust-lang.org/2015/05/15/Rust-1.0.html

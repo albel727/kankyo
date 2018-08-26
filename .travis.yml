@@ -3,7 +3,7 @@ cache: cargo
 os:
   - linux
 rust:
-  - 1.13.0
+  - 1.0.0
   - stable
   - beta
   - nightly

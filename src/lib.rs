@@ -11,7 +11,7 @@
 //!
 //! ### Installation
 //!
-//! This library requires at least Rust 1.13.0.
+//! This library requires at least Rust 1.0.0.
 //!
 //! Add the following dependency to your project's `Cargo.toml`:
 //!
@@ -83,9 +83,8 @@
 //! [docs-badge]: https://img.shields.io/badge/docs-online-5023dd.svg?style=flat-square
 //! [license]: https://opensource.org/licenses/ISC
 //! [license-badge]: https://img.shields.io/badge/license-ISC-blue.svg?style=flat-square
-//! [rust badge]: https://img.shields.io/badge/rust-1.13+-93450a.svg?style=flat-square
-//! [rust link]: https://blog.rust-lang.org/2016/11/10/Rust-1.13.html
-//!
+//! [rust badge]: https://img.shields.io/badge/rust-1.0+-93450a.svg?style=flat-square
+//! [rust link]: https://blog.rust-lang.org/2015/05/15/Rust-1.0.html
 #![deny(missing_docs)]
 
 pub mod utils;
@@ -157,7 +156,9 @@ fn _key(name: &str) -> Option<String> {
 /// Returns an `std::io::Error` if there was an error reading the file.
 #[inline]
 pub fn load() -> Result<()> {
-    load_from_reader(&mut File::open(Path::new(".env"))?)
+    let mut file = try!(File::open(Path::new(".env")));
+
+    load_from_reader(&mut file)
 }
 
 /// Reads the content of a reader and parses it to find `.env` lines.
@@ -166,7 +167,7 @@ pub fn load() -> Result<()> {
 ///
 /// Returns an `std::io::Error` if there was an error reading from the reader.
 pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
-    let content = read_to_string(reader)?;
+    let content = try!(read_to_string(reader));
     utils::set_variables(&utils::parse_lines(&content));
 
     Ok(())
@@ -224,7 +225,7 @@ pub fn snapshot() -> HashMap<String, String> {
 /// Returns an `std::io::Error` if there was an error reading from the reader.
 #[inline]
 pub fn unload() -> Result<()> {
-    unload_from_reader(&mut File::open(".env")?)
+    unload_from_reader(&mut try!(File::open(".env")))
 }
 
 /// Unloads from the read content of the given reader.
@@ -260,7 +261,7 @@ pub fn unload() -> Result<()> {
 ///
 /// [`utils::unload`]: utils/fn.unload.html
 pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
-    let buf = read_to_string(reader)?;
+    let buf = try!(read_to_string(reader));
     let lines = utils::parse_lines(&buf);
     utils::unload_from_parsed_lines(&lines);
 
@@ -269,7 +270,7 @@ pub fn unload_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 
 fn read_to_string<R: Read>(reader: &mut R) -> Result<String> {
     let mut s = String::new();
-    reader.read_to_string(&mut s)?;
+    try!(reader.read_to_string(&mut s));
 
     Ok(s)
 }
