@@ -73,7 +73,7 @@ fn test_unload() {
 
 #[test]
 fn test_unload_from_reader() {
-    let mut lines = Cursor::new("FOO=bar\nBAR=baz");
+    let mut lines = Cursor::new("FOO=bar\nBAR=baz".to_owned().into_bytes());
 
     kankyo::load_from_reader(&mut lines).unwrap();
     assert!(kankyo::key("FOO").is_some());
