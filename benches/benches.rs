@@ -70,7 +70,7 @@ mod utils {
         let lines = kankyo::utils::parse_lines(s);
 
         b.iter(|| {
-            kankyo::utils::set_variables(&lines);
+            kankyo::utils::set_variables(&lines, false);
         });
     }
 

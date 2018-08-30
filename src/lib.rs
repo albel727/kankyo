@@ -48,7 +48,7 @@
 //! # fn try_main() -> Result<(), Box<Error>> {
 //! let mut file = try!(File::open("./.env"));
 //!
-//! try!(kankyo::load_from_reader(&mut file));
+//! try!(kankyo::load_from_reader(&mut file, true));
 //!
 //! println!("Loaded!");
 //! #     Ok(())
@@ -68,7 +68,7 @@
 //! # use std::error::Error;
 //! #
 //! # fn try_main() -> Result<(), Box<Error>> {
-//! try!(kankyo::load());
+//! try!(kankyo::load(false));
 //!
 //! println!("Loaded!");
 //! #     Ok(())
@@ -113,7 +113,7 @@ use std::path::Path;
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// try!(kankyo::load());
+/// try!(kankyo::load(false));
 ///
 /// if let Some(value) = kankyo::key("MY_KEY") {
 ///     println!("The value of MY_KEY is: {}", value);
@@ -142,7 +142,7 @@ fn _key(name: &str) -> Option<String> {
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// try!(kankyo::load());
+/// try!(kankyo::load(false));
 ///
 /// println!("Loaded!");
 /// #     Ok(())
@@ -157,10 +157,10 @@ fn _key(name: &str) -> Option<String> {
 ///
 /// Returns an `std::io::Error` if there was an error reading the file.
 #[inline]
-pub fn load() -> Result<()> {
+pub fn load(overwrite: bool) -> Result<()> {
     let mut file = try!(File::open(Path::new(".env")));
 
-    load_from_reader(&mut file)
+    load_from_reader(&mut file, overwrite)
 }
 
 /// Reads the content of a reader and parses it to find `.env` lines.
@@ -168,9 +168,12 @@ pub fn load() -> Result<()> {
 /// # Errors
 ///
 /// Returns an `std::io::Error` if there was an error reading from the reader.
-pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
+pub fn load_from_reader<R: Read>(
+    reader: &mut R,
+    overwrite: bool,
+) -> Result<()> {
     let content = try!(read_to_string(reader));
-    utils::set_variables(&utils::parse_lines(&content));
+    utils::set_variables(&utils::parse_lines(&content), overwrite);
 
     Ok(())
 }
@@ -188,7 +191,7 @@ pub fn load_from_reader<R: Read>(reader: &mut R) -> Result<()> {
 /// # fn try_main() -> Result<(), Box<Error>> {
 /// let snapshot = kankyo::snapshot();
 ///
-/// try!(kankyo::load());
+/// try!(kankyo::load(false));
 /// #     Ok(())
 /// # }
 /// #
@@ -209,7 +212,7 @@ pub fn snapshot() -> HashMap<String, String> {
 /// # use std::error::Error;
 /// #
 /// # fn try_main() -> Result<(), Box<Error>> {
-/// try!(kankyo::load());
+/// try!(kankyo::load(false));
 /// println!("Loaded!");
 ///
 /// try!(kankyo::unload());
@@ -287,7 +290,7 @@ mod test {
 
     #[test]
     fn test_key() {
-        utils::set_variables(&[("foo", "1")]);
+        utils::set_variables(&[("foo", "1")], true);
         assert!(key("foo").is_some());
         utils::unload(&["foo"]);
     }
@@ -298,7 +301,7 @@ mod test {
 
         let mut cursor = Cursor::new(text);
 
-        load_from_reader(&mut cursor).unwrap();
+        load_from_reader(&mut cursor, true).unwrap();
 
         cursor.set_position(0);
         unload_from_reader(&mut cursor).unwrap();
@@ -306,7 +309,7 @@ mod test {
 
     #[test]
     fn test_snapshot() {
-        utils::set_variables(&[("A", "B")]);
+        utils::set_variables(&[("A", "B")], true);
         let snap = snapshot();
         assert!(snap.contains_key("A"));
     }

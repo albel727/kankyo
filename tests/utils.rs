@@ -5,7 +5,7 @@ use std::env;
 
 #[test]
 fn test_utils() {
-    set_variables(&[("foo", "1"), ("bar", "2")]);
+    set_variables(&[("foo", "1"), ("bar", "2")], true);
     assert!(env::var("foo").is_ok());
 
     unload(&["foo"]);

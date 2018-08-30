@@ -139,6 +139,9 @@ pub fn parse_kv(pair: (OsString, OsString)) -> Option<(String, String)> {
 
 /// Loads the given slice of parsed lines into the environment.
 ///
+/// Additionally you can pass whether to overwrite existing variables with the
+/// same name.
+///
 /// # Examples
 ///
 /// Parse a buffer into parsed lines, and then load the lines into the
@@ -151,13 +154,15 @@ pub fn parse_kv(pair: (OsString, OsString)) -> Option<(String, String)> {
 ///
 /// let lines = utils::parse_lines(content);
 ///
-/// utils::set_variables(&lines);
+/// utils::set_variables(&lines, true);
 /// ```
-pub fn set_variables(lines: &[ParsedLine]) {
+pub fn set_variables(lines: &[ParsedLine], overwrite: bool) {
     for line in lines {
-        if env::var(line.0).is_err() {
-            env::set_var(line.0, line.1);
+        if !overwrite && env::var(line.0).is_err() {
+            continue;
         }
+
+        env::set_var(line.0, line.1);
     }
 }
 

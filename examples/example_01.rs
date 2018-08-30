@@ -18,7 +18,7 @@ fn main() {
     //
     // This if-let is only required in Rust 1.3 and below, as `Result::expect`
     // was not released until Rust 1.4.
-    if let Err(why) = kankyo::load_from_reader(&mut cursor) {
+    if let Err(why) = kankyo::load_from_reader(&mut cursor, true) {
         panic!("Err loading: {:?}", why);
     }
 

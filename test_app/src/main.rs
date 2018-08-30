@@ -7,7 +7,7 @@ use std::io::Cursor;
 // that trying to retrieve it errors.
 #[test]
 fn test_commented_line() {
-    kankyo::load().unwrap();
+    kankyo::load(true).unwrap();
 
     env::var("#commented line").is_err();
 }
@@ -16,7 +16,7 @@ fn test_commented_line() {
 // 'kankyo' function works and does not error.
 #[test]
 fn test_default_location() {
-    kankyo::load().unwrap();
+    kankyo::load(true).unwrap();
 }
 
 // Test that all of the keys in the .env file were successfully put into the
@@ -27,7 +27,7 @@ fn test_default_location() {
 // (e.g. a 1 should be "1" and not a 1i32).
 #[test]
 fn test_envs_set() {
-    kankyo::load().unwrap();
+    kankyo::load(true).unwrap();
 
     assert_eq!(env::var("test").unwrap(), "a");
     assert_eq!(env::var("test2").unwrap(), "1");
@@ -42,7 +42,7 @@ fn test_envs_set() {
 #[test]
 fn test_key() {
     // Tests that a 'cleaner' way to get a key returns a correct value.
-    kankyo::load().unwrap();
+    kankyo::load(true).unwrap();
 
     assert!(kankyo::key("test").is_some());
     assert!(kankyo::key("does_not_exist").is_none());
@@ -56,7 +56,7 @@ fn test_snapshot() {
 
     let before = kankyo::snapshot();
 
-    kankyo::load().unwrap();
+    kankyo::load(true).unwrap();
     let after = kankyo::snapshot();
     assert!(!before.contains_key("test"));
     assert!(after.contains_key("test"));
@@ -65,7 +65,7 @@ fn test_snapshot() {
 // Test that unloading all of the keys from the default '.env' file works.
 #[test]
 fn test_unload() {
-    assert!(kankyo::load().is_ok());
+    assert!(kankyo::load(true).is_ok());
     assert!(kankyo::key("test").is_some());
     assert!(kankyo::unload().is_ok());
     assert!(kankyo::key("test").is_none());
@@ -75,7 +75,7 @@ fn test_unload() {
 fn test_unload_from_reader() {
     let mut lines = Cursor::new("FOO=bar\nBAR=baz".to_owned().into_bytes());
 
-    kankyo::load_from_reader(&mut lines).unwrap();
+    kankyo::load_from_reader(&mut lines, true).unwrap();
     assert!(kankyo::key("FOO").is_some());
 
     // reset the cursor
