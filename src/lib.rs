@@ -36,7 +36,8 @@
 //! `std::io::Read` trait), meaning that you can pass slices of bytes, strings,
 //! files, etc. to it.
 //!
-//! For example, opening a file and parsing its contents into the environment:
+//! For example, opening a file and parsing its contents into the environment,
+//! overwriting existing variables:
 //!
 //! ```rust,no_run
 //! extern crate kankyo;
@@ -68,7 +69,7 @@
 //! # use std::error::Error;
 //! #
 //! # fn try_main() -> Result<(), Box<Error>> {
-//! try!(kankyo::load(false));
+//! try!(kankyo::init());
 //!
 //! println!("Loaded!");
 //! #     Ok(())
@@ -132,6 +133,37 @@ pub fn key<T: AsRef<str>>(name: T) -> Option<String> {
 
 fn _key(name: &str) -> Option<String> {
     env::var(name).ok()
+}
+
+/// Loads a `.env` file at the current working directory (`./.env`), overwriting
+/// existing variables.
+///
+/// This is like [`load`], but always overwrites existing variables.
+///
+/// # Examples
+///
+/// ```rust,no_run
+/// # use std::error::Error;
+/// #
+/// # fn try_main() -> Result<(), Box<Error>> {
+/// #
+/// try!(kankyo::init());
+///
+/// println!("Loaded!");
+/// #     Ok(())
+/// # }
+/// #
+/// # fn main() {
+/// #     try_main().unwrap();
+/// # }
+/// ```
+///
+/// [`load`]: fn.load.html
+#[inline]
+pub fn init() -> Result<()> {
+    let mut file = try!(File::open(Path::new(".env")));
+
+    load_from_reader(&mut file, true)
 }
 
 /// Loads a `.env` file at the current working directory (`./.env`).
