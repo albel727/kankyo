@@ -63,9 +63,9 @@ println!("Loaded!");
 
 License info in [LICENSE.md]. Long story short, ISC.
 
-[LICENSE.md]: https://github.com/zeyla/kankyo/blob/master/LICENSE.md
-[ci]: https://travis-ci.org/zeyla/kankyo
-[ci-badge]: https://img.shields.io/travis/zeyla/kankyo.svg?style=flat-square
+[LICENSE.md]: https://github.com/rusty-crates/kankyo/blob/master/LICENSE.md
+[ci]: https://travis-ci.org/rusty-crates/kankyo
+[ci-badge]: https://img.shields.io/travis/rusty-crates/kankyo.svg?style=flat-square
 [docs]: https://docs.rs/kankyo
 [docs-badge]: https://img.shields.io/badge/docs-online-5023dd.svg?style=flat-square
 [license]: https://opensource.org/licenses/ISC

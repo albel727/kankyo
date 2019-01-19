@@ -3,11 +3,11 @@ authors = ["Zeyla Hellyer <hi@zeyla.me>"]
 categories = ["config"]
 description = "Simple, efficient, and precise .env library."
 documentation = "https://docs.rs/kankyo"
-homepage = "https://github.com/zeyla/kankyo"
+homepage = "https://github.com/rusty-crates/kankyo"
 keywords = ["config", "dotenv"]
 license = "ISC"
 name = "kankyo"
-repository = "https://github.com/zeyla/kankyo.git"
+repository = "https://github.com/rusty-crates/kankyo.git"
 version = "0.2.0"
 
 [badges.maintenance]
@@ -15,12 +15,12 @@ status = "actively-developed"
 
 [badges.coveralls]
 branch = "master"
-repository = "zeyla/kankyo"
+repository = "rusty-crates/kankyo"
 service = "github"
 
 [badges.travis-ci]
 branch = "master"
-repository = "zeyla/kankyo"
+repository = "rusty-crates/kankyo"
 
 [[example]]
 name = "example_01"
