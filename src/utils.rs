@@ -158,7 +158,7 @@ pub fn parse_kv(pair: (OsString, OsString)) -> Option<(String, String)> {
 /// ```
 pub fn set_variables(lines: &[ParsedLine], overwrite: bool) {
     for line in lines {
-        if !overwrite && env::var(line.0).is_err() {
+        if !overwrite && env::var(line.0).is_ok() {
             continue;
         }
 
